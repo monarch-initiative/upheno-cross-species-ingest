@@ -6,27 +6,34 @@ from koza.cli_utils import get_koza_app
 koza_app = get_koza_app("upheno_phenotype_to_phenotype")
 
 while (row := koza_app.get_row()) is not None:
-    # Code to transform each row of data
-    # For more information, see https://koza.monarchinitiative.org/Ingests/transform
-    entity_a = Entity(
-        id=f"XMPL:00000{row['example_column_1'].split('_')[-1]}",
-        name=row["example_column_1"],
-        category=["biolink:Entity"],
+    #if(row['subject_source']=="obo:upheno" or row['object_source']=="obo:upheno"):
+    #    continue
+    
+    subject_phenotype_entity = PhenotypicFeature(
+        id=row["subject_id"],
+        name=row["subject_label"],
+        category=["biolink:PhenotypicFeature"],
     )
-    entity_b = Entity(
-        id=f"XMPL:00000{row['example_column_2'].split('_')[-1]}",
-        name=row["example_column_2"],
-        category=["biolink:Entity"],
+    object_phenotype_entity = PhenotypicFeature(
+        id=row["object_id"],
+        name=row["object_label"],
+        category=["biolink:PhenotypicFeature"],
     )
     association = Association(
         id=str(uuid.uuid1()),
-        subject=row["example_column_1"],
-        predicate=row["example_column_3"],
-        object=row["example_column_2"],
-        subject_category="SUBJ",
-        object_category="OBJ",
+        subject=subject_phenotype_entity.id,
+        original_subject="TEST",
+        predicate="biolink:homologous_to",
+        original_predicate=row["predicate_id"],
+        object=object_phenotype_entity.id,
+        subject_category="biolink:PhenotypicFeature",
+        object_category="biolink:PhenotypicFeature",
         category=["biolink:Association"],
-        knowledge_level="not_provided",
-        agent_type="not_provided",
+        primary_knowledge_source="infores:upheno",
+        knowledge_source="upheno-cross-species.sssom.tsv",
+        has_attribute=[f'"mapping_justification":"{row["mapping_justification"]}"',f'"subject_source":"{row["subject_source"]}"',f'"object_source":"{row["object_source"]}"'],
+        knowledge_level=KnowledgeLevelEnum.prediction,
+        agent_type=AgentTypeEnum.data_analysis_pipeline ,
     )
-    koza_app.write(entity_a, entity_b, association)
+    koza_app.write(subject_phenotype_entity, object_phenotype_entity, association)
+    raise StopIteration
