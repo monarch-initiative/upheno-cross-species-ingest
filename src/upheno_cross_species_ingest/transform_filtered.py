@@ -3,7 +3,7 @@ import uuid  # For generating UUIDs for associations
 from biolink_model.datamodel.pydanticmodel_v2 import *  # Replace * with any necessary data classes from the Biolink Model
 from koza.cli_utils import get_koza_app
 
-koza_app = get_koza_app("upheno_phenotype_to_phenotype")
+koza_app = get_koza_app("upheno_phenotype_to_phenotype_filtered")
 
 while (row := koza_app.get_row()) is not None:
     #if(row['subject_source']=="obo:upheno" or row['object_source']=="obo:upheno"):

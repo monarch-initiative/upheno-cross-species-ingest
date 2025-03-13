@@ -41,6 +41,7 @@ def transform(
 ):
     """Run the Koza transform for upheno cross species ingest."""
     typer.echo("Transforming data for upheno cross species ingest...")
+    #transform_code = Path(__file__).parent / "transform.yaml"
     transform_code = Path(__file__).parent / "transform.yaml"
     transform_source(
         source=transform_code,
@@ -50,6 +51,24 @@ def transform(
         verbose=verbose,
     )
     
+@app.command()
+def transform_filtered(
+    output_dir: str = typer.Option("output", help="Output directory for transformed data"),
+    row_limit: int = typer.Option(None, help="Number of rows to process"),
+    verbose: int = typer.Option(False, help="Whether to be verbose"),
+):
+    """Run the Koza transform for upheno cross species ingest."""
+    typer.echo("Transforming data for upheno cross species ingest...")
+#    transform_code = Path(__file__).parent / "transform_filtered.yaml"
+    transform_code = Path(__file__).parent / "transform_filtered.yaml"
+    transform_source(
+        source=transform_code,
+        output_dir=output_dir,
+        output_format="tsv",
+        row_limit=row_limit,
+        verbose=verbose,
+    )
 
 if __name__ == "__main__":
+    print("HEY")
     app()

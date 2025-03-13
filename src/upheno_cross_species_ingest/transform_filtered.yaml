@@ -1,7 +1,7 @@
 # Config file for transforming data from a source
 # See additional/optional config parameters at https://koza.monarchinitiative.org/Ingests/source_config/
 
-name: "upheno_phenotype_to_phenotype"
+name: "upheno_phenotype_to_phenotype_filtered"
 metadata: "./src/upheno_cross_species_ingest/metadata.yaml"
 format: "csv" # Format of the data files (csv or json)
 delimiter: '\t'

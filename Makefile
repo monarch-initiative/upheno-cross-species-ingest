@@ -74,6 +74,7 @@ download:
 .PHONY: run
 run: download
 	$(RUN) ingest transform
+	$(RUN) ingest transform-filtered
 	$(RUN) python scripts/generate-report.py
 
 
