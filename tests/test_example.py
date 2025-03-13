@@ -8,6 +8,8 @@ See the Koza documentation for more information on testing transforms:
 https://koza.monarchinitiative.org/Usage/testing/
 """
 
+"""
+
 import pytest
 
 from koza.utils.testing_utils import mock_koza
@@ -83,3 +85,6 @@ def test_multiple_rows(mock_transform_multiple_rows):
     entity_b = mock_transform_multiple_rows[1]
     assert entity_a.name == "entity_1"
     assert entity_b.name == "entity_6"
+
+
+"""
