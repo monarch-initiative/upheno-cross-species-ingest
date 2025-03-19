@@ -6,8 +6,8 @@ from koza.cli_utils import get_koza_app
 koza_app = get_koza_app("upheno_phenotype_to_phenotype_filtered")
 
 while (row := koza_app.get_row()) is not None:
-    #if(row['subject_source']=="obo:upheno" or row['object_source']=="obo:upheno"):
-    #    continue
+    if(row['subject_source']=="obo:upheno" or row['object_source']=="obo:upheno"):
+        continue
     
     subject_phenotype_entity = PhenotypicFeature(
         id=row["subject_id"],
