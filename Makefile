@@ -1,5 +1,5 @@
 ROOTDIR = $(shell pwd)
-RUN = poetry run
+RUN = uv run
 VERSION = $(shell poetry -C src/upheno_cross_species_ingest version -s)
 
 ### Help ###

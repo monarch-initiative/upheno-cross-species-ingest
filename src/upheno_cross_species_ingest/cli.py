@@ -6,7 +6,11 @@ from pathlib import Path
 from kghub_downloader.download_utils import download_from_yaml
 from kghub_downloader.model import DownloadOptions
 
-from koza.cli_utils import transform_source
+#from koza.cli_utils import transform_source
+from koza.runner import KozaRunner
+from koza.model.formats import OutputFormat as KozaOutputFormat
+
+
 import typer
 
 app = typer.Typer()
@@ -32,9 +36,28 @@ def download(force: bool = typer.Option(False, help="Force download of data, eve
     download_options.ignore_cache = True 
     download_from_yaml(yaml_file=download_config, output_dir=".", download_options=download_options)
 
-
 @app.command()
 def transform(
+    output_dir: str = typer.Option("output", help="Output directory for transformed data"),
+    row_limit: int = typer.Option(None, help="Number of rows to process"),
+    verbose: int = typer.Option(False, help="Whether to be verbose"),
+):
+    """Run the Koza transform for upheno cross species ingest."""
+    typer.echo("Transforming data for upheno cross species ingest...")
+    #transform_code = Path(__file__).parent / "transform.yaml"
+    transform_code = Path(__file__).parent / "transform.yaml"
+
+    config, runner = KozaRunner.from_config_file(
+        config_filename=str(transform_code),
+        output_dir=str(output_dir),
+        output_format=KozaOutputFormat.tsv,
+        input_files_dir="../../data/"
+    )
+    runner.run()
+
+
+@app.command()
+def transform_v0(
     output_dir: str = typer.Option("output", help="Output directory for transformed data"),
     row_limit: int = typer.Option(None, help="Number of rows to process"),
     verbose: int = typer.Option(False, help="Whether to be verbose"),

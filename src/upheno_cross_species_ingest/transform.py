@@ -1,11 +1,25 @@
-import uuid  # For generating UUIDs for associations
+import koza
 
-from biolink_model.datamodel.pydanticmodel_v2 import *  # Replace * with any necessary data classes from the Biolink Model
-from koza.cli_utils import get_koza_app
+from typing import Any
 
-koza_app = get_koza_app("upheno_phenotype_to_phenotype")
+from biolink_model.datamodel.pydanticmodel_v2 import (
+    PhenotypicFeature,
+    Association,
+    KnowledgeLevelEnum,
+    AgentTypeEnum,
+)  # Replace * with any necessary data classes from the Biolink Model
 
-while (row := koza_app.get_row()) is not None:
+from koza.model.graphs import KnowledgeGraph
+from bmt.pydantic import build_association_knowledge_sources
+from bmt.pydantic import entity_id
+
+INFORES_UPHENO = "infores:upheno"
+
+@koza.transform_record(tag=None)
+def transform_bgee_expressed_in(
+        koza_transform: koza.KozaTransform,
+        row: dict[str, Any]
+) -> KnowledgeGraph | None:
     #if(row['subject_source']=="obo:upheno" or row['object_source']=="obo:upheno"):
     #    continue
     
@@ -20,9 +34,8 @@ while (row := koza_app.get_row()) is not None:
         category=["biolink:PhenotypicFeature"],
     )
     association = Association(
-        id=str(uuid.uuid1()),
+        id=entity_id(),
         subject=subject_phenotype_entity.id,
-        original_subject="TEST",
         predicate="biolink:homologous_to",
         original_predicate=row["predicate_id"],
         object=object_phenotype_entity.id,
@@ -35,4 +48,4 @@ while (row := koza_app.get_row()) is not None:
         knowledge_level=KnowledgeLevelEnum.prediction,
         agent_type=AgentTypeEnum.data_analysis_pipeline ,
     )
-    koza_app.write(subject_phenotype_entity, object_phenotype_entity, association)
+    return KnowledgeGraph(nodes=[subject_phenotype_entity,object_phenotype_entity], edges=[association])

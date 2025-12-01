@@ -4,4 +4,4 @@
 ### For more information, see https://github.com/monarch-initiative/kghub-downloader
 ---
 - url: https://github.com/obophenotype/upheno-dev/raw/refs/heads/master/src/mappings/upheno-cross-species.sssom.tsv
-  local_name: data/upheno-cross-species.sssom.tsv
+  local_name: upheno-cross-species.sssom.tsv
