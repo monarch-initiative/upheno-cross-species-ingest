@@ -1,6 +1,6 @@
 ROOTDIR = $(shell pwd)
 RUN = uv run
-VERSION = $(shell poetry -C src/upheno_cross_species_ingest version -s)
+VERSION = $(shell uv -C src/upheno_cross_species_ingest version -s)
 
 ### Help ###
 
@@ -19,7 +19,7 @@ define HELP
 │     clean               Clean up build artifacts          │
 │     clobber             Clean up generated files          │
 │                                                           │
-│     install             Poetry install package            │
+│     install             uv install package            │
 │     download            Download data                     │
 │     run                 Run the transform                 │
 │                                                           │
@@ -48,7 +48,7 @@ all: install test
 
 .PHONY: install
 install: 
-	poetry install --with dev
+	uv sync
 
 
 ### Documentation ###
@@ -74,8 +74,9 @@ download:
 .PHONY: run
 run: download
 	$(RUN) ingest transform
-	$(RUN) ingest transform-filtered
 	$(RUN) python scripts/generate-report.py
+###$(RUN) ingest transform-filtered
+
 
 
 ### Linting, Formatting, and Cleaning ###
