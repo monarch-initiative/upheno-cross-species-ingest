@@ -1,0 +1,13 @@
+category	prefix	count_star()
+biolink:PhenotypicFeature	APO	38
+biolink:PhenotypicFeature	DDPHENO	468
+biolink:PhenotypicFeature	FBcv	204
+biolink:PhenotypicFeature	FYPO	966
+biolink:PhenotypicFeature	HP	4816
+biolink:PhenotypicFeature	MGPO	24
+biolink:PhenotypicFeature	MP	6256
+biolink:PhenotypicFeature	PHIPO	512
+biolink:PhenotypicFeature	PLANP	242
+biolink:PhenotypicFeature	WBPhenotype	618
+biolink:PhenotypicFeature	XPO	2448
+biolink:PhenotypicFeature	ZP	1156
