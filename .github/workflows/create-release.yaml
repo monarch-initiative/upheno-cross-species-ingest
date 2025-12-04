@@ -42,7 +42,7 @@ jobs:
       - name: Run Transform
         run: |
           make run
-          poetry run python scripts/generate-rdf.py
+
 
       - name: Get Date for Release Tag
         run: echo "DATE=$(date +%Y-%m-%d)" >> $GITHUB_ENV
