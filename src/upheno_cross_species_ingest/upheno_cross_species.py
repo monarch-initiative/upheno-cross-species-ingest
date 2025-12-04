@@ -16,7 +16,7 @@ from bmt.pydantic import entity_id
 INFORES_UPHENO = "infores:upheno"
 
 @koza.transform_record(tag=None)
-def transform_bgee_expressed_in(
+def transform_upheno(
         koza_transform: koza.KozaTransform,
         row: dict[str, Any]
 ) -> KnowledgeGraph | None:

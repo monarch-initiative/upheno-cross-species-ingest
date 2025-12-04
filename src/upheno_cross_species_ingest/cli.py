@@ -34,7 +34,7 @@ def download(force: bool = typer.Option(False, help="Force download of data, eve
     download_config = Path(__file__).parent / "download.yaml"
     download_options = DownloadOptions()
     download_options.ignore_cache = True 
-    download_from_yaml(yaml_file=download_config, output_dir=".", download_options=download_options)
+    download_from_yaml(yaml_file=download_config, output_dir="./data", download_options=download_options)
 
 @app.command()
 def transform(
@@ -45,7 +45,7 @@ def transform(
     """Run the Koza transform for upheno cross species ingest."""
     typer.echo("Transforming data for upheno cross species ingest...")
     #transform_code = Path(__file__).parent / "transform.yaml"
-    transform_code = Path(__file__).parent / "transform.yaml"
+    transform_code = Path(__file__).parent / "upheno_cross_species.yaml"
 
     config, runner = KozaRunner.from_config_file(
         config_filename=str(transform_code),
