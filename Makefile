@@ -71,11 +71,21 @@ test:
 download:
 	$(RUN) ingest download
 
+.PHONY: transform
+transform:
+	$(RUN) ingest transform
+
+.PHONY: report
+report:
+#	$(RUN) python scripts/generate-rdf.py
+	$(RUN) python scripts/generate-report.py
+
+
 .PHONY: run
 run: download
-	$(RUN) ingest transform
-	$(RUN) python scripts/generate-rdf.py
-	$(RUN) python scripts/generate-report.py
+run: transform
+run: report
+
 ###$(RUN) ingest transform-filtered
 
 
