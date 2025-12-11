@@ -34,7 +34,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
 
       - name: Install Dependencies
-        run: uv sync
+        run: make install
 
       - name: Run Tests
         run: make test
