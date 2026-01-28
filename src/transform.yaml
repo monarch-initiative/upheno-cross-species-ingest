@@ -8,10 +8,11 @@ metadata:
 #metadata: "./src/upheno_cross_species_ingest/metadata.yaml"
 
 reader:
+  name: "upheno_phenotype_to_phenotype_reader"
   format: "csv" # Format of the data files (csv or json)
   delimiter: '\t'
-  files: 
-    - "upheno-cross-species.sssom.tsv"
+  files:
+    - "../data/upheno-cross-species.sssom.tsv"
   # For a csv/tsv file, list expected columns
 
   columns:
@@ -34,7 +35,12 @@ reader:
       filter_code: 'eq'
       value: 'obo:upheno'
 
+transform:
+  name: "upheno_phenotype_to_phenotype_transform"
+  mode: "flat"
+
 writer:
+  name: "upheno_phenotype_to_phenotype_writer"
   node_properties:
     # List of node properties to include, if ingesting nodes
     # Remove if not ingesting nodes
