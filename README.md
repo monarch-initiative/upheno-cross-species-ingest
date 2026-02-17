@@ -1,85 +1,38 @@
-# upheno-cross-species-ingest
+# uPheno Cross-Species Phenotype Mappings
 
-An automated ingest transforming the uPheno data artifact upheno-cross-species.sssom.tsv into KGX format.
+The [Unified Phenotype Ontology (uPheno)](https://github.com/obophenotype/upheno) provides cross-species phenotype mappings, enabling comparison of phenotypic data across different model organisms. This ingest transforms the uPheno cross-species SSSOM (Simple Standard for Sharing Ontological Mappings) file into phenotype-to-phenotype associations.
 
-## Requirements
+Data is downloaded from the uPheno project: `upheno-cross-species.sssom.tsv`
 
-- Python >= 3.10
-- [uv](https://docs.astral.sh/uv/)
-- [just](https://github.com/casey/just) (optional, for task running)
+## Phenotype Associations
 
-## Installation
+Each row in the SSSOM file represents a mapping between two phenotype terms from different species-specific ontologies (e.g. HP, MP, ZP, WBPhenotype). The ingest creates PhenotypicFeature nodes for both subject and object phenotypes, connected by a `homologous_to` association.
 
-```bash
-uv sync --group dev
-```
+Mapping metadata (justification, subject source, object source) from the SSSOM file is preserved as attributes on the association.
 
-## Usage
+**Biolink Captured:**
 
-To see available commands:
+- `biolink:PhenotypicFeature` (nodes)
+    - id (phenotype term ID)
+    - name (phenotype label)
 
-```bash
-just
-```
+- `biolink:Association`
+    - id (generated)
+    - subject (phenotype term ID)
+    - predicate (`biolink:homologous_to`)
+    - original_predicate (predicate ID from SSSOM row)
+    - object (phenotype term ID)
+    - subject_category (`biolink:PhenotypicFeature`)
+    - object_category (`biolink:PhenotypicFeature`)
+    - has_attribute (mapping justification, subject source, object source)
+    - primary_knowledge_source (`infores:upheno`)
+    - knowledge_level (`prediction`)
+    - agent_type (`data_analysis_pipeline`)
 
-### Download and Transform
+## Citation
 
-Download the source data:
+Matentzoglu N, Bello SM, Stefancsik R, Alghamdi SM, Anagnostopoulos AV, Balhoff JP, Balk MA, Bradford YM, Bridges Y, Callahan TJ, Caufield H, Cuzick A, Carmody LC, Caron AR, de Souza V, Engel SR, Fey P, Fisher M, Gehrke S, Grove C, Hansen P, Harris NL, Harris MA, Harris L, Ibrahim A, Jacobsen JOB, Kohler S, McMurry JA, Munoz-Fuentes V, Munoz-Torres MC, Parkinson H, Pendlington ZM, Pilgrim C, Robb SM, Robinson PN, Seager J, Segerdell E, Smedley D, Sollis E, Toro S, Vasilevsky N, Wood V, Haendel MA, Mungall CJ, McLaughlin JA, Osumi-Sutherland D. The Unified Phenotype Ontology (uPheno): A framework for cross-species integrative phenomics. Genetics. 2025;229(3):iyaf027. doi: 10.1093/genetics/iyaf027. PMID: 40048704
 
-```bash
-just download
-```
+## License
 
-Run all transforms:
-
-```bash
-just transform-all
-```
-
-Or run the full pipeline (download + transform):
-
-```bash
-just run
-```
-
-### Testing
-
-```bash
-just test
-```
-
-### Linting and Formatting
-
-```bash
-just lint
-just format
-```
-
-## Data Source
-
-This ingest transforms the uPheno cross-species SSSOM mapping file, which contains phenotype mappings across different species from the Unified Phenotype Ontology (uPheno) project.
-
-### Source Files
-
-- `upheno-cross-species.sssom.tsv` - Cross-species phenotype mappings from the uPheno project
-
-### Nodes and Edges
-
-- **PhenotypicFeature nodes** - Phenotype entities from various species ontologies (HP, MP, ZP, etc.)
-- **Association edges** - `homologous_to` relationships between phenotypes from different species
-
-## Project Structure
-
-- `download.yaml` - Configuration for downloading source data
-- `src/transform.yaml` - Koza transform configuration
-- `src/transform.py` - Transform code
-- `tests/` - Unit tests
-- `output/` - Generated KGX files (gitignored)
-- `data/` - Downloaded source data (gitignored)
-
-## GitHub Actions
-
-- `test.yaml` - Run tests on push and PR
-- `create-release.yaml` - Create releases
-- `deploy-docs.yaml` - Deploy documentation to GitHub Pages
-- `update-docs.yaml` - Update documentation after releases
+BSD-3-Clause
