@@ -19,6 +19,8 @@ dependencies = [
   "kghub-downloader>=0.4.0",
   "biolink-model>=4.0.0",
   "bmt>=1.4.0",
+  "kozahub-metadata-schema",
+  "requests>=2.28.0",
 ]
 
 [dependency-groups]
@@ -45,6 +47,7 @@ package = true
 [tool.uv.sources]
 biolink-model = { git = "https://github.com/biolink/biolink-model.git", rev = "master" }
 bmt = { git = "https://github.com/biolink/biolink-model-toolkit.git", rev = "master" }
+kozahub-metadata-schema = { git = "https://github.com/monarch-initiative/kozahub-metadata-schema", rev = "main" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
