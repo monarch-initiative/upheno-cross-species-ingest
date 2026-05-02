@@ -1,0 +1,84 @@
+# upheno-cross-species-ingest justfile
+
+# Package directory
+PKG := "src"
+
+# Explicitly enumerate transforms
+TRANSFORMS := "transform"
+
+# List all commands
+_default:
+    @just --list
+
+# ============== Project Management ==============
+
+# Install dependencies
+[group('project management')]
+install:
+    uv sync --group dev
+
+# ============== Ingest Pipeline ==============
+
+# Full pipeline: download -> transform -> postprocess -> metadata
+[group('ingest')]
+run: download transform-all postprocess metadata
+    @echo "Done!"
+
+# Download source data
+[group('ingest')]
+download: install
+    uv run downloader download.yaml
+
+# Run all transforms
+[group('ingest')]
+transform-all: download
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for t in {{TRANSFORMS}}; do
+        if [ -n "$t" ]; then
+            echo "Transforming $t..."
+            uv run koza transform {{PKG}}/$t.yaml
+        fi
+    done
+
+# Emit output/release-metadata.yaml describing this build's upstream sources and artifacts
+[group('ingest')]
+metadata:
+    uv run python scripts/write_metadata.py
+
+# Run specific transform
+[group('ingest')]
+transform NAME:
+    uv run koza transform {{PKG}}/{{NAME}}.yaml
+
+# Postprocess (no-op for this ingest)
+[group('ingest')]
+postprocess:
+    @echo "No postprocessing required"
+
+# ============== Development ==============
+
+# Run tests
+[group('development')]
+test: install
+    uv run pytest
+
+# Run tests with coverage
+[group('development')]
+test-cov: install
+    uv run pytest --cov=. --cov-report=term-missing
+
+# Lint code
+[group('development')]
+lint:
+    uv run ruff check .
+
+# Format code
+[group('development')]
+format:
+    uv run ruff format .
+
+# Clean output directory
+[group('development')]
+clean:
+    rm -rf output/

@@ -1,0 +1,12 @@
+_commit: b7f2804
+_src_path: gh:monarch-initiative/koza-ingest-template
+copyright_year: '2026'
+email: info@monarchinitiative.org
+full_name: Monarch Initiative
+github_handle: monarch-initiative
+github_org: monarch-initiative
+license: BSD-3-Clause
+project_description: An automated ingest transforming the upheno data artifact upheno-cross-species.sssom.tsv
+    into KGX.
+project_name: upheno-cross-species-ingest
+project_slug: upheno_cross_species_ingest
