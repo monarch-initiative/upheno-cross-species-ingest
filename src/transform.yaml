@@ -1,20 +1,10 @@
-# Config file for transforming data from a source
-# See additional/optional config parameters at https://koza.monarchinitiative.org/Ingests/source_config/
-
-name: "upheno_phenotype_to_phenotype"
-metadata:
-  ingest_title: "upheno_phenotype_to_phenotype"
-
-#metadata: "./src/upheno_cross_species_ingest/metadata.yaml"
+name: 'upheno_phenotype_to_phenotype'
 
 reader:
-  name: "upheno_phenotype_to_phenotype_reader"
-  format: "csv" # Format of the data files (csv or json)
+  format: 'csv'
   delimiter: '\t'
   files:
-    - "../data/upheno-cross-species.sssom.tsv"
-  # For a csv/tsv file, list expected columns
-
+    - '../data/upheno-cross-species.sssom.tsv'
   columns:
     - 'subject_id'
     - 'subject_label'
@@ -24,7 +14,6 @@ reader:
     - 'mapping_justification'
     - 'subject_source'
     - 'object_source'
-
   filters:
     - inclusion: 'exclude'
       column: 'subject_source'
@@ -35,29 +24,19 @@ reader:
       filter_code: 'eq'
       value: 'obo:upheno'
 
-transform:
-  name: "upheno_phenotype_to_phenotype_transform"
-  mode: "flat"
-
 writer:
-  name: "upheno_phenotype_to_phenotype_writer"
   node_properties:
-    # List of node properties to include, if ingesting nodes
-    # Remove if not ingesting nodes
     - id
     - name
     - category
-
   edge_properties:
-    # List of edge properties to include if ingesting edges
-    # Remove if not ingesting edges
     - id
     - subject
     - predicate
     - object
     - subject_category
     - object_category
-    - category        
+    - category
     - primary_knowledge_source
     - knowledge_source
     - knowledge_level
