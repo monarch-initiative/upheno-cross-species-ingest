@@ -36,12 +36,7 @@ def transform_record(koza_transform: KozaTransform, row: dict[str, Any]) -> list
         object_category="biolink:PhenotypicFeature",
         category=["biolink:Association"],
         primary_knowledge_source=INFORES_UPHENO,
-        knowledge_source="upheno-cross-species.sssom.tsv",
-        has_attribute=[
-            f'"mapping_justification":"{row["mapping_justification"]}"',
-            f'"subject_source":"{row["subject_source"]}"',
-            f'"object_source":"{row["object_source"]}"',
-        ],
+        aggregator_knowledge_source=["infores:monarchinitiative"],
         knowledge_level=KnowledgeLevelEnum.prediction,
         agent_type=AgentTypeEnum.data_analysis_pipeline,
     )

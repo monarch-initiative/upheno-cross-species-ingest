@@ -3,26 +3,22 @@
 # Package directory
 PKG := "src"
 
-# Explicitly enumerate transforms
+# Explicitly enumerate transforms (add new ingests here)
 TRANSFORMS := "transform"
 
 # List all commands
 _default:
     @just --list
 
-# ============== Project Management ==============
+# Initialize a new project
+[group('project management')]
+setup: _git-init install _git-add
+    git commit -m "Initialize upheno-cross-species-ingest"
 
 # Install dependencies
 [group('project management')]
 install:
     uv sync --group dev
-
-# ============== Ingest Pipeline ==============
-
-# Full pipeline: download -> transform -> postprocess -> metadata
-[group('ingest')]
-run: download transform-all postprocess metadata
-    @echo "Done!"
 
 # Download source data
 [group('ingest')]
@@ -46,17 +42,14 @@ transform-all: download
 metadata:
     uv run python scripts/write_metadata.py
 
+# Run full pipeline: install, download, transform, metadata, test
+[group('ingest')]
+run: test transform-all metadata
+
 # Run specific transform
 [group('ingest')]
 transform NAME:
     uv run koza transform {{PKG}}/{{NAME}}.yaml
-
-# Postprocess (no-op for this ingest)
-[group('ingest')]
-postprocess:
-    @echo "No postprocessing required"
-
-# ============== Development ==============
 
 # Run tests
 [group('development')]
@@ -79,6 +72,13 @@ format:
     uv run ruff format .
 
 # Clean output directory
-[group('development')]
+[group('ingest')]
 clean:
     rm -rf output/
+
+# Hidden recipes
+_git-init:
+    git init
+
+_git-add:
+    git add .
