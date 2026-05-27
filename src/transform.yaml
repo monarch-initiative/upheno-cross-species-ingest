@@ -11,7 +11,6 @@ reader:
     - 'predicate_id'
     - 'object_id'
     - 'object_label'
-    - 'mapping_justification'
     - 'subject_source'
     - 'object_source'
   filters:
@@ -38,8 +37,7 @@ writer:
     - object_category
     - category
     - primary_knowledge_source
-    - knowledge_source
+    - aggregator_knowledge_source
     - knowledge_level
-    - has_attribute
     - agent_type
     - original_predicate
