@@ -1,4 +1,3 @@
-import uuid
 from typing import Any
 
 import koza
@@ -27,7 +26,6 @@ def transform_record(koza_transform: KozaTransform, row: dict[str, Any]) -> list
         category=["biolink:PhenotypicFeature"],
     )
     association = Association(
-        id=f"urn:uuid:{uuid.uuid4()}",
         subject=subject_phenotype.id,
         predicate="biolink:homologous_to",
         original_predicate=row["predicate_id"],
